@@ -1,9 +1,10 @@
 import requests
 from flask import Flask, render_template, request, jsonify, abort, make_response
-
-from src.utils.web_recognition import web_recognize
+from utils.load_model import load_trained_model
+from utils.recognition import recognize
 
 app = Flask(__name__)
+model = load_trained_model()
 
 
 @app.route('/')
@@ -13,14 +14,14 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    try:
-        url = request.form.get('url')
-        res = requests.get(url)
-        data = web_recognize(res.content)
-        return jsonify(data)
-    except Exception as e:
-        print(e)
-        abort(400)
+    # try:
+    url = request.form.get('url')
+    res = requests.get(url)
+    data = recognize(model, res.content)
+    return jsonify(data)
+    # except Exception as e:
+    #     print(e)
+    #     abort(400)
 
 
 @app.errorhandler(400)
