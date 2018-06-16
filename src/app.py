@@ -15,10 +15,10 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
-    	url = request.form.get('url')
-    	res = requests.get(url)
-    	data = recognize(model, res.content)
-    	return jsonify(data)
+        url = request.form.get('url')
+        res = requests.get(url)
+        data = recognize(model, res.content)
+        return jsonify(data)
     except Exception as e:
         print(e)
         abort(400)
